@@ -1,20 +1,14 @@
 window.addEventListener("load", () => {
-    const body = null;
-    const method = "GET";
-    const url = "http:localhost:1111/test";
-    const req = new Request(encodeURI(url), {
-        // @ts-ignore
-        method: method,
-        body: body
+    // Create WebSocket connection.
+    const socket = new WebSocket("ws://localhost:1111");
+
+    // Connection opened
+    socket.addEventListener("open", function(event) {
+        socket.send("Hello Server!");
     });
-    fetch(req)
-        .then(res => {
-            return res.json();
-        })
-        .then(data => {
-            document.getElementById("result").innerText = JSON.stringify(data);
-        })
-        .catch(err => {
-            console.error(err);
-        });
+
+    // Listen for messages
+    socket.addEventListener("message", function(event) {
+        console.log("Message from server ", event.data);
+    });
 });
